@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>oKanban</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.3.45/css/materialdesignicons.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
+
+<body>
+    <section class="section ">
+        <div class="container">
+            <h1 class="title">
+                oKanban
+            </h1>
+            <div class="columns is-vcentered">
+                <div class="column is-narrow">
+                    <button class="button is-narrow is-success" id="addListButton">
+                        <span class="icon is-small">
+                            <i class="fas fa-plus"></i>
+                        </span>
+                        &nbsp; New list
+                    </button>
+                </div>
+                <div class="dropdown column is-narrow" id="tagDropdown">
+                    <div class="dropdown-trigger">
+                        <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                            <span class="icon is-small">
+                                <i class="mdi mdi-tag"></i>
+                            </span>
+                            <span>Tag settings</span>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                        <div class="dropdown-content">
+                            <a href="#" class="dropdown-item" id="addTagButton">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-tag-plus"></i>
+                                </span>
+                                &nbsp; New tag
+                            </a>
+                            <a href="#" class="dropdown-item" id="modifyTagButton">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-tag"></i>
+                                </span>
+                                &nbsp; Modify tag
+                            </a>
+                            <a href="#" class="dropdown-item" id="removeTagButton">
+                                <span class="icon is-small">
+                                    <i class="mdi mdi-tag-remove"></i>
+                                </span>
+                                &nbsp; Delete tag
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="column navbar is-link is-narrow">
+                    <p class="tag-title">List of tags</p>
+                    <div id="tagsNavbar" class="tags">
+                        <a href="#" title="Add Tag" class="icon is-small has-text-white button--add-tag" id="addTagNavButton">
+                            <i class="mdi mdi-tag-plus"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="columns" id="sortableList">
+            </div>
+        </div>
+    </section>
+    
+
+    <!-- Les modales -->
+    <div class="modal" id="addListModal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <form action="" method="POST">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">New list</p>
+                    <button class="delete close" type="button" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="field">
+                        <label class="label">Name</label>
+                        <div class="control">
+                            <input type="text" class="input" name="name" value="" placeholder="List name">
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button close" type="button">Cancel</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="addCardModal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <form action="" method="POST">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">New card</p>
+                    <button class="delete close" type="button" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="field">
+                        <div class="control">
+                            <label class="label">Content</label>
+                            <input type="text" class="input" name="content" value="" placeholder="Card content">
+                            <label class="label">Color</label>
+                            <input type="color" class="input-color is-small" name="color" value="#FFFFFF">
+                            <input type="hidden" name="list_id">
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button close" type="button">Cancel</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="addTagModal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <form action="" method="POST">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">New tag</p>
+                    <button class="delete close" type="button" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="field">
+                        <div class="control">
+                            <label class="label">Name</label>
+                            <input type="text" class="input" name="name" value="" placeholder="Tag name">
+                            <label class="label">Color</label>
+                            <input type="color" class="input-color is-small" name="color" value="#FFFFFF">
+                            <input type="hidden" name="card_id">
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button close" type="button">Cancel</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="removeTagModal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <form action="" method="POST">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Delete tag</p>
+                    <button class="delete close" type="button" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="field">
+                        <div class="control has-icons-left">
+                            <div class="select">
+                                <select class="form-control" id ="selectTagModal" name="tag_id" aria-describedby="tag_idHelp">
+                                    <option class="tag-remove-option" style="display:none" >Select tag</option>
+                            </select>
+                            <div class="icon is-small is-left">
+                                <i class="mdi mdi-tag"></i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button close" type="button">Cancel</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="modifyTagModal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <form action="" method="POST">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Modify tag</p>
+                    <button class="delete close" type="button" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="field">
+                        <div class="control has-icons-left">
+                            <div class="select">
+                                <select class="form-control" id ="selectTagModal" name="tag_id" aria-describedby="tag_idHelp">
+                                    <option class="tag-remove-option" style="display:none">Select tag</option>
+                                </select>
+                            </div>
+                            <div class="icon is-small is-left">
+                                <i class="mdi mdi-tag"></i>
+                            </div>
+                            <label class="label">Name</label>
+                            <input type="text" class="input" name="name" value="" placeholder="Tag name">
+                            <label class="label">Color</label>
+                            <input type="color" class="input-color is-small" name="color" value="#FFFFFF"> 
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button close" type="button">Cancel</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="addTagToCardModal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <form action="" method="POST">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Add tag to card</p>
+                    <button class="delete close" type="button" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="field">
+                        <div class="control has-icons-left">
+                            <div class="select">
+                                <select class="form-control" id ="selectTagModal" name="tagId" aria-describedby="tag_idHelp">
+                                    <option class="tag-remove-option" style="display:none">Select tag</option>
+                                </select>
+                            </div>
+                            <div class="icon is-small is-left">
+                                <i class="mdi mdi-tag"></i>
+                            </div>
+                            <input type="hidden" name="card_id">
+                        </div>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-success">Save changes</button>
+                    <button class="button close" type="button">Cancel</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+    <!-- Chargement de mon fichier JS -->
+    <script src="bundle.js"></script>
+
+    <!-- Mes templates -->
+    <template id="template-list">
+        <div class="column is-one-quarter panel is-link" list-id="A">
+            <div class="panel-heading">
+                <div class="columns">
+                    <div class="column">
+                        <h2 class="has-text-white">List name</h2>
+
+                        <form action="" method="POST" class="is-hidden">
+                            <input type="hidden" name="list-id" value="1">
+                            <div class="field has-addons">
+                                <div class="control">
+                                    <input type="text" class="input is-small" name="name" value=""
+                                        placeholder="Nom de la liste">
+                                </div>
+                                <div class="control">
+                                    <button class="button is-small is-success">Validate</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="column is-narrow is-pulled-right">
+                        <a href="#" class="button--add-card" title="New Card">
+                            <span class="icon is-small has-text-white">
+                                <i class="mdi mdi-card-plus"></i>
+                            </span>
+                        </a>
+                        <a href="#" class="button--delete-list" title="Delete List">
+                            <span class="icon is-small has-text-white">
+                                <i class="fas fa-trash-alt"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-block is-block">
+
+            </div>
+        </div>
+    </template>
+
+    <template id="template-card">
+        <div class="box" card-id="M">
+            <div class="columns tags">
+                <a href="#" title="Add Tag" class="icon is-small has-text-info button--add-tag">
+                    <i class="mdi mdi-tag-plus"></i>
+                </a>
+            </div>
+            <div class="columns">
+                <div class="column card-name">
+                    Card name
+                </div>
+
+                <form action="" method="POST" class="is-hidden">
+                    <div class="field has-addons">
+                        <div class="control">
+                            <input type="text" class="input is-small" name="content" value=""
+                                placeholder="Card title">
+                            <input type="color" class="input-color is-small" name="color" value="#FFFFFF"
+                            >
+                        </div>
+                        <div class="control">
+                            <button class="button is-small is-success">Validate</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="column is-narrow">
+                    <a href="#" class="button--edit-card" title="Edit Card">
+                        <span class="icon is-small has-text-primary">
+                            <i class="fas fa-pencil-alt"></i>
+                        </span>
+                    </a>
+                    <a href="#" class="button--delete-card" title="Delete Card">
+                        <span class="icon is-small has-text-danger">
+                            <i class="fas fa-trash-alt"></i>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-tag">
+        <span class="column is-narrow tag is-success" tag-id="M">
+            Tag
+        </span>
+    </template>
+
+    <template id="template-tag-option">
+        <option value="tag_id">Tag name</option>
+    </template>
+
+    <template id="template-tag-delete">
+    <button class="delete"></button>
+    </template>
+
+</body>
+
+</html>

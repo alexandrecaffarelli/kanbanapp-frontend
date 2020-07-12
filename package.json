@@ -1,0 +1,29 @@
+{
+  "name": "kanban-front",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "css-build": "node-sass --omit-source-map-url ./assets/sass/mystyles.scss ./assets/css/style.css",
+    "css-watch": "npm run css-build -- --watch",
+    "start": "npm run css-watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexandrecaffarelli/kanban-front.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexandrecaffarelli/kanban-front/issues"
+  },
+  "homepage": "https://github.com/alexandrecaffarelli/kanban-front#readme",
+  "dependencies": {
+    "browserify": "^16.5.1",
+    "bulma": "^0.9.0",
+    "node-sass": "^4.14.1",
+    "sortablejs": "^1.10.2"
+  }
+}

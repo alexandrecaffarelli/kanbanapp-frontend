@@ -2,9 +2,9 @@ const Sortable = require('sortablejs');
 const cardModule = require('./card');
 
 const listModule = {
-  base_url: "http://localhost:5050",
+  // base_url: "http://localhost:5050",
   // for AWS:
-  // base_url: "",
+  base_url: "",
 
   setBaseUrl: (url) => {
     listModule.base_url = url + '/lists';

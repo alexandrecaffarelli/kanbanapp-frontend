@@ -5,9 +5,9 @@ const tagModule = require('./tag');
 
 var app = {
   // base url for our api !
-  base_url: "http://localhost:5050",
+  // base_url: "http://localhost:5050",
   // for AWS:
-  // base_url: "",
+  base_url: "",
   // init function, launched once page has loaded
   init: function () {
     listModule.setBaseUrl(app.base_url);
@@ -351,9 +351,9 @@ const Sortable = require('sortablejs');
 const tagModule = require('./tag');
 
 const cardModule = {
-  base_url: "http://localhost:5050",
+  // base_url: "http://localhost:5050",
   // for AWS:
-  // base_url: "",
+  base_url: "",
 
   setBaseUrl: (url) => {
     cardModule.base_url = url + '/cards';
@@ -671,9 +671,9 @@ const Sortable = require('sortablejs');
 const cardModule = require('./card');
 
 const listModule = {
-  base_url: "http://localhost:5050",
+  // base_url: "http://localhost:5050",
   // for AWS:
-  // base_url: "",
+  base_url: "",
 
   setBaseUrl: (url) => {
     listModule.base_url = url + '/lists';
@@ -829,9 +829,9 @@ const listModule = {
 module.exports = listModule;
 },{"./card":2,"sortablejs":5}],4:[function(require,module,exports){
 const tagModule = {
-    base_url: "http://localhost:5050",
+    // base_url: "http://localhost:5050",
     // for AWS:
-    // base_url: "",
+    base_url: "",
   
     setBaseUrl: (url) => {
       tagModule.base_url = url + '/tags';

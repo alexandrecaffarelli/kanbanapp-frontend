@@ -1,7 +1,7 @@
 const tagModule = {
-    base_url: "http://localhost:5050",
+    // base_url: "http://localhost:5050",
     // for AWS:
-    // base_url: "",
+    base_url: "",
   
     setBaseUrl: (url) => {
       tagModule.base_url = url + '/tags';
